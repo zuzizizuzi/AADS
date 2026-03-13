@@ -1,6 +1,6 @@
 package second;
 
-import org.w3c.dom.Node;
+
 
 public class CustomList {
     int value;
