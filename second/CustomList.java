@@ -1,23 +1,25 @@
 package second;
 
-import org.w3c.dom.Node;
 
 public class CustomList {
-    int value;
-    Node prev; //предыдущий узел
-    Node next; //следующий узел
 
+    //внтур класс узла 
+    public static class Node{
+        int data;
+        Node prev; //предыдущий узел
+        Node next; //следующий узел
+
+        Node(int data) {
+            this.data = data;
+        }
     
-    
-  
-    Object start;
-    int size;     //размер списка
-
-
-    //по базе конструктор
-    public CustomList(int value) {
-        this.value=value;
+        
     }
+    
+    private Node start; //head
+    private int size;     //размер списка
+
+
 
     //пустой список
     public CustomList() {
@@ -27,31 +29,29 @@ public class CustomList {
 
     //список из одного элемента
     public CustomList(int value) {
-        start = new LinkedNode(value);
+        start = new Node(value);
         size=1;
     }
 
     //список из массива
     public CustomList(int[] vvv) {
-        this() ;//конструктор пустого списка
+        this();//конструктор пустого списка
         for (int v: vvv) {
-            addEnd(); //будем добавлять каждый элемент в конец
+            addEnd(v); //будем добавлять каждый элемент в конец
         }
     }
 
     //добавление в начало
     public void addStart(int value) {
-        LinkedNode newNode = new LinkedNode(int value);
-
-
+        Node newNode = new Node(value);
+        newNode.next = start;
         if (start == null) {
             start = newNode;
         } else {
-            newNode.nextNode = start;
-            start.previousNode = newNode;
-            start = newNode;
+            start.prev =  newNode;
+            
         }
-
+        start = newNode;
         size++;
     }
 
@@ -72,15 +72,15 @@ public class CustomList {
         }
 
         //последний узел
-        LinkedNode pointer = start;
-        while (pointer.nextNode != null) {
-            pointer = pointer.nextNode;
+        Node pointer = start;
+        while (pointer.next != null) {
+            pointer = pointer.next;
         }
 
         //добавляю новый узел
-        LinkedNode newNode = new LinkedNode(value);
-        pointer.nextNode = newNode;
-        newNode.previousNode = pointer;
+        Node newNode = new Node(value);
+        pointer.next = newNode;
+        newNode.prev = pointer;
         size++;
 
     }
@@ -101,13 +101,13 @@ public class CustomList {
     //удалю сначала
     public void deleteStart() {
         if (start == null) {
-            System.out.println("****")
+            System.out.println("****");
             return;
         }
 
-        start = start.nextNode; //голова уходит на след узел
+        start = start.next; //голова уходит на след узел
         if (start != null) { //если список не пустой
-            start.previousNode = null;
+            start.prev = null;
         }
         size--;
     }
@@ -120,25 +120,22 @@ public class CustomList {
         }
 
         //если один элемент
-        if (start.nextNode == null) {
-            int val = start.info;
+        if (start.next == null) {
             start = null;
             size--;
             return;
         }
 
         //поиск предпоследнего узла
-        LinkedNode pointer = start;
-        while (pointer.nextNode != null) {
-            pointer = pointer.nextNode;
+        Node pointer = start;
+        while (pointer.next != null) {
+            pointer = pointer.next;
         }
         //pointer - последний узел
 
-        int val = pointer.info;
-
         //убираем последний узел
-        if (pointer.previousNode != null) {
-            pointer.previousNode.nextNode = null;
+        if (pointer.prev != null) {
+            pointer.prev.next = null;
 
         }
         size--;
@@ -154,10 +151,10 @@ public class CustomList {
             return;
         }
 //узел для удаления
-        LinkedNode current = getNode(position);
+        Node current = getNode(position);
 
-        current.previousNode.nextNode = current.nextNode; //2 связи пред и след
-        current.nextNode.previousNode = current.previousNode; //след и пред
+        current.prev.next = current.next; //2 связи пред и след
+        current.next.prev = current.prev; //след и пред
         size--;
         //узел current удалится, разорвутся ссылки
         
@@ -168,12 +165,12 @@ public class CustomList {
 
     //удаление всех вхождений
     public void removeAll(int value) {
-        LinkedNode current = start;
+        Node current = start;
 
         while (current != null) {
-            LinkedNode next = current.nextNode;
+            Node next = current.next;
 
-            if (current.info == value) { //если значение совпадает, то удаляем узел
+            if (current.data == value) { //если значение совпадает, то удаляем узел
                 removeNode(current);
             }
 
@@ -189,16 +186,16 @@ public class CustomList {
 
     //попытка перевернуть список за 1 проход
     public void reverse() {
-        LinkedNode current = start;
-        LinkedNode temp = null;
+        Node current = start;
+        Node temp = null;
 
         // смена prev и next у каждого узла
         while (current != null) {
-            temp = current.previousNode; //старая прев
-            current.previousNode = current.nextNode; //прев теперь некст
+            temp = current.prev; //старая прев
+            current.prev = current.next; //прев теперь некст
 
-            current.nextNode = temp; //некст - старая прев
-            current = current.previousNode; //двигаемся вперед
+            current.next = temp; //некст - старая прев
+            current = current.prev; //двигаемся вперед
         }
 
         //меняем местами хвост и голову
@@ -206,13 +203,6 @@ public class CustomList {
     
     }
 
-
-
-
-
-
-
-
-
+   
 
 }
