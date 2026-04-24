@@ -6,10 +6,10 @@ public class Main {
     public static void main(String[] args) {
         
         try {
-            System.out.println("подготовкааааа");
+        
 
             DataGenerator.generateFiles(51, 100, 1000);
-            // 1. Сначала запускаем бенчмарк
+            //запускаем бенчмарк
             Benchmarking.runBenchmark();
             
             

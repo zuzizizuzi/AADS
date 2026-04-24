@@ -2,21 +2,14 @@ package patience_sort;
 
 import java.util.*;
 
-
-
 public class PatienceSort {
 
-    
 
     public static class Metrics {
         public long timeNs;
         public long iterations;
     }
-    public static <T extends Comparable<T>> Metrics sort(Collection<T> collection) {
-        List<T> list = new ArrayList<>(collection);
-        return sort(list);
-    }
-
+    
 
    public static <T extends Comparable<T>> Metrics sort(List<T> list) {
         Metrics metrics = new Metrics();
@@ -29,8 +22,6 @@ public class PatienceSort {
             int left = 0;
             int right = piles.size() - 1;
             int pos = -1;
-
-        
 
         while (left <= right) {
             metrics.iterations++; //подсчет итераций вложенного цикла
@@ -62,11 +53,7 @@ public class PatienceSort {
     metrics.timeNs = System.nanoTime() - startTime;
     return metrics;    
 
-
-
     }
 
-
-    
 
 }
